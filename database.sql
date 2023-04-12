@@ -1,4 +1,4 @@
--- CREATE DATABASE cms;
+-- CREATE DATABASE frag-ments;
 
 CREATE TABLE cms(
     id SERIAL PRIMARY KEY,

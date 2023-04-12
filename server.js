@@ -1,159 +1,246 @@
-/////////////////////////////////////////////////////////////////////////
-// set up
-/////////////////////////////////////////////////////////////////////////
+//___________________*
+
+//Dependencies*
+
+//___________________*
 
 const express = require('express');
-const cors = require('cors');
-// const methodOverride = require('method-override');
-const app = express();
-const path = require('path');
+// const methodOverride  = require('method-override');
+const app = express ();
 const postgres = require('./postgres.js');
-const PORT = process.env.PORT || 3000;
 
-require('dotenv').config();
+require('dotenv').config()
 
-//___________________
-//Middleware
-//___________________
-
-app.use(cors());
-// app.use(methodOverride('_method'));
-app.use(express.urlencoded({extended: false}));
 app.use(express.json());
+app.use(express.static('public'))
+
+//___________________*
+
+//Port*
+
+//___________________*
+
+// Allow use of Heroku's port or your own local port, depending on the environment*
+
+const PORT = process.env.PORT
+
+//___________________*
+
+//Database*
+
+//___________________*
 
 
-//Static
-// app.use(express.static('public'));
-app.use(express.static(__dirname + "/public"));
 
-// // Serve static files from the React frontend app
-// app.use(express.static(path.join(__dirname, 'build')));
+//___________________*
 
+//Middleware*
 
-//this worked
-// if (process.env.NODE_ENV === "production") {
-//     //server static content
-//     //npm run build
-//     app.use(express.static(path.join(__dirname, "client/build")));
-//   }
-  
-//   console.log(__dirname);
-//   console.log(path.join(__dirname, "client/build"));
- 
+//___________________*
 
+//use public folder for static assets*
 
-/////////////////////////////////////////////////////////////////////////
-// routes
-/////////////////////////////////////////////////////////////////////////
+app.use(express.static('public'));
 
-// const fragmentsController = require('./controllers/fragments.js');
-// app.use('/fragments', fragmentsController)
+// populates req.body with parsed info from forms - if no data from forms will return an empty object {}*
 
+app.use(express.urlencoded({ extended: false }));// extended: false - does not allow nested objects in query strings*
 
-//fet all fragments
+app.use(express.json());// returns middleware that only parses JSON - may or may not need it depending on your project*
 
-app.get('/fragments', async (req, res) => {
-    try {
-      const allFragments = await postgres.query('SELECT * FROM cms ORDER BY id ASC');
-      res.json(allFragments.rows);
-    } catch (err) {
-      console.error(err.message);
-    }
-  });
+//use method override*
 
-// app.get('/', (req, res) => {
-//     postgres.query('SELECT * FROM fragments ORDER BY id ASC;', (err, results) => {
-//         res.send(results)
-//         console.log(results)
-//     });
+// app.use(methodOverride('_method'));
+// allow POST, PUT and DELETE from a form*
+
+//___________________*
+
+// Routes*
+
+//___________________*
+
+//localhost:3000*
+
+// app.get('/' , (req, res) => {
+
+// res.send('Hello World!');
+
 // });
 
-app.post("/add", async (req, res) => {
-    try {
-      const { date } = req.body;
-      const { movie } = req.body;
-      const { short } = req.body;
-      const { tv_series } = req.body;
-      const { book } = req.body;
-      const { play } = req.body;
-      const { short_story } = req.body;
-      const newCMS = await postgres.query(
-        "INSERT INTO cms (date, movie, short, tv_series, book, play, short_story) VALUES ($1, $2 ,$3, $4, $5, $6, $7) RETURNING *",
-        [date, movie, short, tv_series, book, play, short_story]
-      );
-  
-      res.json(newCMS.rows[0]);
-    } catch (err) {
-      console.error(err.message);
-    }
-  });
-
-app.delete('/delete/:id', (req, res) => {
-    postgres.query(`DELETE FROM cms WHERE id = ${req.params.id};`, (err, results) => {
-        postgres.query('SELECT * FROM cms ORDER BY id ASC;', (err, results) => {
-            res.json(results.rows)
-        });
-    });
-});
-
-app.put("/update/:id", async (req, res) => {
-    try {
-      const { id } = req.params;
-      const { date } = req.body;
-      const { movie } = req.body;
-      const { short } = req.body;
-      const { tv_series } = req.body;
-      const { book } = req.body;
-      const { play } = req.body;
-      const { short_story } = req.body;
-      const updateCMS = await postgres.query(
-        'UPDATE cms SET date = $1, movie = $2, short = $3, tv_series = $4, book = $5, play = $6, short_story = $7 WHERE id = $8',
-        [date, movie, short, tv_series, book, play, short_story, id]
-      );
-  
-      res.json(updateCMS);
-    } catch (err) {
-      console.error(err.message);
-    }
-  });
-
-
+const fragmentsController = require('./controllers/fragment.js');
+app.use('/fragments', fragmentsController)
 
 // const testController = require('./controllers/test.js');
-// app.use('/test', testController)
+// app.use('/test', testController);
 
-// const fragmentsController = require('./controllers/fragments.js');
-// app.use('/', fragmentsController)
+//___________________*
 
+//Listener*
 
-
-//___________________
-//Initial Test route
-//___________________
-
-// app.get('/', (req, res)=> {
-//   res.send('Hello world')
-// })
-
-/////////////////////////////////////////////////////////////////////////
-// connection
-/////////////////////////////////////////////////////////////////////////
+//___________________*
 
 postgres.connect();
 
-// app.listen (3000, () => {
-//     console.log('listening...');
+app.listen(process.env.PORT || 3000, () => {
+    console.log('listening');
+})
 
-// })
+// /////////////////////////////////////////////////////////////////////////
+// // set up
+// /////////////////////////////////////////////////////////////////////////
 
-//this worked
-// app.get("*", (req, res) => {
-//     res.sendFile(path.join(__dirname, "client/build/index.html"));
-//   });
+// const express = require('express');
+// const cors = require('cors');
+// // const methodOverride = require('method-override');
+// const app = express();
+// const path = require('path');
+// const postgres = require('./postgres.js');
+// const PORT = process.env.PORT || 3000;
+
+// require('dotenv').config();
+
+// //___________________
+// //Middleware
+// //___________________
+
+// app.use(cors());
+// // app.use(methodOverride('_method'));
+// app.use(express.urlencoded({extended: false}));
+// app.use(express.json());
+
+
+// //Static
+// // app.use(express.static('public'));
+// app.use(express.static(__dirname + "/public"));
+
+// // // Serve static files from the React frontend app
+// // app.use(express.static(path.join(__dirname, 'build')));
+
+
+// //this worked
+// // if (process.env.NODE_ENV === "production") {
+// //     //server static content
+// //     //npm run build
+// //     app.use(express.static(path.join(__dirname, "client/build")));
+// //   }
   
-  app.listen(PORT, () => {
-    console.log(`Server is starting on port ${PORT}`);
-  });
+// //   console.log(__dirname);
+// //   console.log(path.join(__dirname, "client/build"));
+ 
+
+
+// /////////////////////////////////////////////////////////////////////////
+// // routes
+// /////////////////////////////////////////////////////////////////////////
+
+// // const fragmentsController = require('./controllers/fragments.js');
+// // app.use('/fragments', fragmentsController)
+
+
+// //fet all fragments
+
+// app.get('/fragments', async (req, res) => {
+//     try {
+//       const allFragments = await postgres.query('SELECT * FROM cms ORDER BY id ASC');
+//       res.json(allFragments.rows);
+//     } catch (err) {
+//       console.error(err.message);
+//     }
+//   });
+
+// // app.get('/', (req, res) => {
+// //     postgres.query('SELECT * FROM fragments ORDER BY id ASC;', (err, results) => {
+// //         res.send(results)
+// //         console.log(results)
+// //     });
+// // });
+
+// app.post("/add", async (req, res) => {
+//     try {
+//       const { date } = req.body;
+//       const { movie } = req.body;
+//       const { short } = req.body;
+//       const { tv_series } = req.body;
+//       const { book } = req.body;
+//       const { play } = req.body;
+//       const { short_story } = req.body;
+//       const newCMS = await postgres.query(
+//         "INSERT INTO cms (date, movie, short, tv_series, book, play, short_story) VALUES ($1, $2 ,$3, $4, $5, $6, $7) RETURNING *",
+//         [date, movie, short, tv_series, book, play, short_story]
+//       );
+  
+//       res.json(newCMS.rows[0]);
+//     } catch (err) {
+//       console.error(err.message);
+//     }
+//   });
+
+// app.delete('/delete/:id', (req, res) => {
+//     postgres.query(`DELETE FROM cms WHERE id = ${req.params.id};`, (err, results) => {
+//         postgres.query('SELECT * FROM cms ORDER BY id ASC;', (err, results) => {
+//             res.json(results.rows)
+//         });
+//     });
+// });
+
+// app.put("/update/:id", async (req, res) => {
+//     try {
+//       const { id } = req.params;
+//       const { date } = req.body;
+//       const { movie } = req.body;
+//       const { short } = req.body;
+//       const { tv_series } = req.body;
+//       const { book } = req.body;
+//       const { play } = req.body;
+//       const { short_story } = req.body;
+//       const updateCMS = await postgres.query(
+//         'UPDATE cms SET date = $1, movie = $2, short = $3, tv_series = $4, book = $5, play = $6, short_story = $7 WHERE id = $8',
+//         [date, movie, short, tv_series, book, play, short_story, id]
+//       );
+  
+//       res.json(updateCMS);
+//     } catch (err) {
+//       console.error(err.message);
+//     }
+//   });
+
+
+
+// // const testController = require('./controllers/test.js');
+// // app.use('/test', testController)
+
+// // const fragmentsController = require('./controllers/fragments.js');
+// // app.use('/', fragmentsController)
+
+
+
+// //___________________
+// //Initial Test route
+// //___________________
+
+// // app.get('/', (req, res)=> {
+// //   res.send('Hello world')
+// // })
+
+// /////////////////////////////////////////////////////////////////////////
+// // connection
+// /////////////////////////////////////////////////////////////////////////
+
+// postgres.connect();
+
+// // app.listen (3000, () => {
+// //     console.log('listening...');
+
+// // })
+
+// //this worked
+// // app.get("*", (req, res) => {
+// //     res.sendFile(path.join(__dirname, "client/build/index.html"));
+// //   });
+  
+//   app.listen(PORT, () => {
+//     console.log(`Server is starting on port ${PORT}`);
+//   });
 
 //___________________
 //Listener
