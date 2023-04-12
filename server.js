@@ -197,7 +197,7 @@ app.use('/fragments', fragmentsController)
 // // connection
 // /////////////////////////////////////////////////////////////////////////
 
-// postgres.connect();
+postgres.connect();
 
 // // app.listen (3000, () => {
 // //     console.log('listening...');
@@ -210,8 +210,8 @@ app.use('/fragments', fragmentsController)
 // // app.listen(PORT, () => console.log( 'Listening on port:', PORT));
 
   
-//   app.listen(PORT, () => {
-//     console.log(`Server is starting on port ${PORT}`);
-//   });
+  app.listen(PORT, () => {
+    console.log(`Server is starting on port ${PORT}`);
+  });
 
 
