@@ -2,15 +2,24 @@ const express = require('express');
 const app = express();
 const postgres = require('./postgres.js');
 const fragmentController = require('./controllers/fragment.js');
+const path = require('path');
 const cors = require('cors')
 const PORT = process.env.PORT || 3000;
 
+require('dotenv').config();
 
+//___________________
+//Middleware
+//___________________
+
+app.use(cors());
+// app.use(methodOverride('_method'));
+app.use(express.urlencoded({extended: false}));
 app.use(express.json());
 app.use(express.static('public'))
 app.use(cors())
 
-app.use('/fragment', fragmentController);
+app.use('/fragments', fragmentController);
 
 
 
