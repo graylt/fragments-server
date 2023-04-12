@@ -92,8 +92,8 @@ app.use(express.json());
 // routes
 /////////////////////////////////////////////////////////////////////////
 
-// const fragmentsController = require('./controllers/fragments.js');
-// app.use('/fragments', fragmentsController)
+const fragmentsController = require('./controllers/fragment.js');
+app.use('/fragments', fragmentsController)
 
 //get profiles
 // app.get('/fragments', (req, res) => {
@@ -105,113 +105,113 @@ app.use(express.json());
 
 //fet all fragments
 
-app.get('/fragments', async (req, res) => {
-    try {
-      const allFragments = await postgres.query('SELECT * FROM cms ORDER BY id ASC');
-      res.json(allFragments.rows);
-    } catch (err) {
-      console.error(err.message);
-    }
-  });
+// app.get('/fragments', async (req, res) => {
+//     try {
+//       const allFragments = await postgres.query('SELECT * FROM cms ORDER BY id ASC');
+//       res.json(allFragments.rows);
+//     } catch (err) {
+//       console.error(err.message);
+//     }
+//   });
 
-// app.get('/', (req, res) => {
-//     postgres.query('SELECT * FROM fragments ORDER BY id ASC;', (err, results) => {
-//         res.send(results)
-//         console.log(results)
+// // app.get('/', (req, res) => {
+// //     postgres.query('SELECT * FROM fragments ORDER BY id ASC;', (err, results) => {
+// //         res.send(results)
+// //         console.log(results)
+// //     });
+// // });
+
+// app.post("/add", async (req, res) => {
+//     try {
+//       const { date } = req.body;
+//       const { movie } = req.body;
+//       const { short } = req.body;
+//       const { tv_series } = req.body;
+//       const { book } = req.body;
+//       const { play } = req.body;
+//       const { short_story } = req.body;
+//       const newCMS = await postgres.query(
+//         "INSERT INTO cms (date, movie, short, tv_series, book, play, short_story) VALUES ($1, $2 ,$3, $4, $5, $6, $7) RETURNING *",
+//         [date, movie, short, tv_series, book, play, short_story]
+//       );
+  
+//       res.json(newCMS.rows[0]);
+//     } catch (err) {
+//       console.error(err.message);
+//     }
+//   });
+
+// app.delete('/delete/:id', (req, res) => {
+//     postgres.query(`DELETE FROM cms WHERE id = ${req.params.id};`, (err, results) => {
+//         postgres.query('SELECT * FROM cms ORDER BY id ASC;', (err, results) => {
+//             res.json(results.rows)
+//         });
 //     });
 // });
 
-app.post("/add", async (req, res) => {
-    try {
-      const { date } = req.body;
-      const { movie } = req.body;
-      const { short } = req.body;
-      const { tv_series } = req.body;
-      const { book } = req.body;
-      const { play } = req.body;
-      const { short_story } = req.body;
-      const newCMS = await postgres.query(
-        "INSERT INTO cms (date, movie, short, tv_series, book, play, short_story) VALUES ($1, $2 ,$3, $4, $5, $6, $7) RETURNING *",
-        [date, movie, short, tv_series, book, play, short_story]
-      );
+// app.put("/update/:id", async (req, res) => {
+//     try {
+//       const { id } = req.params;
+//       const { date } = req.body;
+//       const { movie } = req.body;
+//       const { short } = req.body;
+//       const { tv_series } = req.body;
+//       const { book } = req.body;
+//       const { play } = req.body;
+//       const { short_story } = req.body;
+//     //   const { email } = req.body;
+//       const updateCMS = await postgres.query(
+//         'UPDATE cms SET date = $1, movie = $2, short = $3, tv_series = $4, book = $5, play = $6, short_story = $7 WHERE id = $8',
+//         [date, movie, short, tv_series, book, play, short_story, id]
+//       );
   
-      res.json(newCMS.rows[0]);
-    } catch (err) {
-      console.error(err.message);
-    }
-  });
+//       res.json(updateCMS);
+//     } catch (err) {
+//       console.error(err.message);
+//     }
+//   });
 
-app.delete('/delete/:id', (req, res) => {
-    postgres.query(`DELETE FROM cms WHERE id = ${req.params.id};`, (err, results) => {
-        postgres.query('SELECT * FROM cms ORDER BY id ASC;', (err, results) => {
-            res.json(results.rows)
-        });
-    });
-});
+// //this worked
+// // app.get("/", (req, res, next) => {
+// //     res.sendFile( path.resolve( __dirname, '/public' ) );
+// // });
 
-app.put("/update/:id", async (req, res) => {
-    try {
-      const { id } = req.params;
-      const { date } = req.body;
-      const { movie } = req.body;
-      const { short } = req.body;
-      const { tv_series } = req.body;
-      const { book } = req.body;
-      const { play } = req.body;
-      const { short_story } = req.body;
-    //   const { email } = req.body;
-      const updateCMS = await postgres.query(
-        'UPDATE cms SET date = $1, movie = $2, short = $3, tv_series = $4, book = $5, play = $6, short_story = $7 WHERE id = $8',
-        [date, movie, short, tv_series, book, play, short_story, id]
-      );
-  
-      res.json(updateCMS);
-    } catch (err) {
-      console.error(err.message);
-    }
-  });
+// // const testController = require('./controllers/test.js');
+// // app.use('/test', testController)
 
-//this worked
-// app.get("/", (req, res, next) => {
-//     res.sendFile( path.resolve( __dirname, '/public' ) );
-// });
+// // const fragmentsController = require('./controllers/fragments.js');
+// // app.use('/', fragmentsController)
 
-// const testController = require('./controllers/test.js');
-// app.use('/test', testController)
-
-// const fragmentsController = require('./controllers/fragments.js');
-// app.use('/', fragmentsController)
-
-// After defining your routes, anything that doesn't match what's above, we want to return index.html from our built React app
+// // After defining your routes, anything that doesn't match what's above, we want to return index.html from our built React app
 
 
-//___________________
-//Initial Test route
-//___________________
+// //___________________
+// //Initial Test route
+// //___________________
 
-// app.get('/', (req, res)=> {
-//   res.send('Hello world')
-// })
+// // app.get('/', (req, res)=> {
+// //   res.send('Hello world')
+// // })
 
-/////////////////////////////////////////////////////////////////////////
-// connection
-/////////////////////////////////////////////////////////////////////////
+// /////////////////////////////////////////////////////////////////////////
+// // connection
+// /////////////////////////////////////////////////////////////////////////
 
-postgres.connect();
+// postgres.connect();
 
-// app.listen (3000, () => {
-//     console.log('listening...');
+// // app.listen (3000, () => {
+// //     console.log('listening...');
 
-// })
+// // })
 
-//___________________
-//Listener
-//___________________
-// app.listen(PORT, () => console.log( 'Listening on port:', PORT));
+// //___________________
+// //Listener
+// //___________________
+// // app.listen(PORT, () => console.log( 'Listening on port:', PORT));
 
   
-  app.listen(PORT, () => {
-    console.log(`Server is starting on port ${PORT}`);
-  });
+//   app.listen(PORT, () => {
+//     console.log(`Server is starting on port ${PORT}`);
+//   });
 
 
