@@ -8,6 +8,7 @@ const express = require('express');
 // const methodOverride  = require('method-override');
 const app = express ();
 const postgres = require('./postgres.js');
+const fragmentsController = require('./controllers/fragment.js');
 
 require('dotenv').config()
 
@@ -67,7 +68,6 @@ app.use(express.json());// returns middleware that only parses JSON - may or may
 
 // });
 
-const fragmentsController = require('./controllers/fragment.js');
 app.use('/fragments', fragmentsController)
 
 // const testController = require('./controllers/test.js');
