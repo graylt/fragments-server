@@ -11,7 +11,7 @@ const proConfig = process.env.DATABASE_URL;
 // }
 
 const dbConfig = {
-	connectionString: 'postgresql://localhost:5432/fragments-server',
+	connectionString: 'postgresql://localhost:5432/frag-ments',
 }
 
 if (process.env.DATABASE_URL){
