@@ -100,8 +100,9 @@ app.post("/add", async (req, res) => {
       const { play } = req.body;
       const { short_story } = req.body;
       const newCMS = await postgres.query(
-        "INSERT INTO cms (date, movie, short, tv_series, book, play, short_story) VALUES ($1, $2 ,$3, $4, $5, $6, $7) RETURNING *",
-        [date, movie, short, tv_series, book, play, short_story]
+        // "INSERT INTO cms (date, movie, short, tv_series, book, play, short_story) VALUES ($1, $2 ,$3, $4, $5, $6, $7) RETURNING *",
+        // [date, movie, short, tv_series, book, play, short_story]
+        `INSERT INTO cms (date, movie, short, tv_series, book, play, short_story) VALUES ('${req.body.date}', ${req.body.movie}, ${req.body.short}, ${req.body.tv_series}, ${req.body.book}, ${req.body.play}, ${req.body.short_story})`
       );
   
       res.json(newCMS.rows[0]);
@@ -130,8 +131,9 @@ app.put("/update/:id", async (req, res) => {
       const { short_story } = req.body;
     //   const { email } = req.body;
       const updateCMS = await postgres.query(
-        'UPDATE cms SET date = $1, movie = $2, short = $3, tv_series = $4, book = $5, play = $6, short_story = $7 WHERE id = $8',
-        [date, movie, short, tv_series, book, play, short_story, id]
+        // 'UPDATE cms SET date = $1, movie = $2, short = $3, tv_series = $4, book = $5, play = $6, short_story = $7 WHERE id = $8',
+        // [date, movie, short, tv_series, book, play, short_story, id]
+        `UPDATE cms SET date = '${req.body.date}', movie = ${req.body.movie}, short = ${req.body.short}, tv_series = ${req.body.tv_series}, book = ${req.body.book}, play = ${req.body.play}, short_story = ${req.body.short_story} WHERE id = ${req.params.id}`
       );
   
       res.json(updateCMS);
