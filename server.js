@@ -105,7 +105,7 @@ app.use(express.json());
 
 //fet all fragments
 
-app.get('/fragments', async (req, res) => {
+app.get('/', async (req, res) => {
     try {
       const allFragments = await postgres.query('SELECT * FROM cms ORDER BY id ASC');
       res.json(allFragments.rows);
@@ -121,7 +121,7 @@ app.get('/fragments', async (req, res) => {
 //     });
 // });
 
-app.post("/add", async (req, res) => {
+app.post("/", async (req, res) => {
     try {
       const { date } = req.body;
       const { movie } = req.body;
@@ -156,7 +156,7 @@ app.post("/add", async (req, res) => {
     // }
   });
 
-app.delete('/delete/:id', (req, res) => {
+app.delete('/:id', (req, res) => {
     postgres.query(`DELETE FROM cms WHERE id = ${req.params.id};`, (err, results) => {
         postgres.query('SELECT * FROM cms ORDER BY id ASC;', (err, results) => {
             res.json(results.rows)
@@ -164,7 +164,7 @@ app.delete('/delete/:id', (req, res) => {
     });
 });
 
-app.put("/update/:id", async (req, res) => {
+app.put("/:id", async (req, res) => {
     try {
       const { id } = req.params;
       const { date } = req.body;
