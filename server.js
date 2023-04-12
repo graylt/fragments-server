@@ -35,7 +35,7 @@
 
 const express = require('express');
 const cors = require('cors');
-const methodOverride = require('method-override');
+// const methodOverride = require('method-override');
 const app = express();
 const path = require('path');
 const postgres = require('./postgres.js');
@@ -63,7 +63,7 @@ app.use(cors());
 
 // app.use(methodOverride('_method'));// allow POST, PUT and DELETE from a form
 
-app.use(methodOverride('_method'));
+// app.use(methodOverride('_method'));
 app.use(express.urlencoded({extended: false}));
 app.use(express.json());
 
@@ -122,16 +122,21 @@ app.get('/fragments', async (req, res) => {
 // });
 
 app.post("/add", async (req, res) => {
-    postgres.query(`INSERT INTO cms (date, movie, short, tv_series, book, play, short_story) VALUES ('${req.body.date}', '${req.body.movie}', '${req.body.short}', '${req.body.tv_series}', '${req.body.book}', '${req.body.play}', '${req.body.short_story}')`, (err, results) => {
-        postgres.query('SELECT * FROM cms ORDER BY id ASC;', (err, results) => {
-            if (err) {
-                console.log(err);
-            } else {
-            console.log(req.body);
-            res.json(results.rows)
-            }
-        });
-    })
+    try {
+      const { date } = req.body;
+      const { movie } = req.body;
+      const { short } = req.body;
+      const { tv_series } = req.body;
+      const { book } = req.body;
+      const { play } = req.body;
+      const { short_story } = req.body;
+      const newCMS = postgres.query(`INSERT INTO cms (date, movie, short, tv_series, book, play, short_story) VALUES ('${req.body.date}', '${req.body.movie}', '${req.body.short}', '${req.body.tv_series}', '${req.body.book}', '${req.body.play}', '${req.body.short_story}') RETURNING *`, [date, movie, short, tv_series, book, play, short_story]
+        );
+    
+        res.json(newCMS.rows[0]);
+      } catch (err) {
+        console.error(err.message);
+      }
     // try {
     //   const { date } = req.body;
     //   const { movie } = req.body;
@@ -160,11 +165,25 @@ app.delete('/delete/:id', (req, res) => {
 });
 
 app.put("/update/:id", async (req, res) => {
-    postgres.query(`UPDATE cms SET date = '${req.body.date}', movie = '${req.body.movie}', short = '${req.body.short}', tv_series = '${req.body.tv_series}', book = '${req.body.book}', play = '${req.body.play}', short_story = '${req.body.short_story}' WHERE id = ${req.params.id}`, (err, results) => {
-        postgres.query('SELECT * FROM cms ORDER BY id ASC;', (err, results) => {
-            res.json(results.rows)
-        });
-    })
+    try {
+      const { id } = req.params;
+      const { date } = req.body;
+      const { movie } = req.body;
+      const { short } = req.body;
+      const { tv_series } = req.body;
+      const { book } = req.body;
+      const { play } = req.body;
+      const { short_story } = req.body;
+    //   const { email } = req.body;
+      const updateCMS =
+    postgres.query(`UPDATE cms SET date = '${req.body.date}', movie = '${req.body.movie}', short = '${req.body.short}', tv_series = '${req.body.tv_series}', book = '${req.body.book}', play = '${req.body.play}', short_story = '${req.body.short_story}' WHERE id = ${req.params.id}`,
+        [date, movie, short, tv_series, book, play, short_story, id]
+      );
+  
+      res.json(updateCMS);
+    } catch (err) {
+      console.error(err.message);
+    }
     // try {
     //   const { id } = req.params;
     //   const { date } = req.body;
