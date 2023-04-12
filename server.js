@@ -61,8 +61,8 @@ app.use(express.json());
 // routes
 /////////////////////////////////////////////////////////////////////////
 
-const fragmentsController = require('./controllers/fragment.js');
-app.use('/fragments', fragmentsController)
+// const fragmentsController = require('./controllers/fragments.js');
+// app.use('/fragments', fragmentsController)
 
 //get profiles
 // app.get('/fragments', (req, res) => {
@@ -74,14 +74,14 @@ app.use('/fragments', fragmentsController)
 
 //fet all fragments
 
-// app.get('/fragments', async (req, res) => {
-//     try {
-//       const allFragments = await postgres.query('SELECT * FROM cms ORDER BY id ASC');
-//       res.json(allFragments.rows);
-//     } catch (err) {
-//       console.error(err.message);
-//     }
-//   });
+app.get('/fragments', async (req, res) => {
+    try {
+      const allFragments = await postgres.query('SELECT * FROM cms ORDER BY id ASC');
+      res.json(allFragments.rows);
+    } catch (err) {
+      console.error(err.message);
+    }
+  });
 
 // app.get('/', (req, res) => {
 //     postgres.query('SELECT * FROM fragments ORDER BY id ASC;', (err, results) => {
@@ -90,57 +90,57 @@ app.use('/fragments', fragmentsController)
 //     });
 // });
 
-// app.post("/add", async (req, res) => {
-//     try {
-//       const { date } = req.body;
-//       const { movie } = req.body;
-//       const { short } = req.body;
-//       const { tv_series } = req.body;
-//       const { book } = req.body;
-//       const { play } = req.body;
-//       const { short_story } = req.body;
-//       const newCMS = await postgres.query(
-//         // "INSERT INTO cms (date, movie, short, tv_series, book, play, short_story) VALUES ($1, $2 ,$3, $4, $5, $6, $7) RETURNING *",
-//         // [date, movie, short, tv_series, book, play, short_story]
-//         `INSERT INTO cms (date, movie, short, tv_series, book, play, short_story) VALUES ('${req.body.date}', ${req.body.movie}, ${req.body.short}, ${req.body.tv_series}, ${req.body.book}, ${req.body.play}, ${req.body.short_story})`
-//       );
+app.post("/add", async (req, res) => {
+    try {
+      const { date } = req.body;
+      const { movie } = req.body;
+      const { short } = req.body;
+      const { tv_series } = req.body;
+      const { book } = req.body;
+      const { play } = req.body;
+      const { short_story } = req.body;
+      const newCMS = await postgres.query(
+        // "INSERT INTO cms (date, movie, short, tv_series, book, play, short_story) VALUES ($1, $2 ,$3, $4, $5, $6, $7) RETURNING *",
+        // [date, movie, short, tv_series, book, play, short_story]
+        `INSERT INTO cms (date, movie, short, tv_series, book, play, short_story) VALUES ('${req.body.date}', ${req.body.movie}, ${req.body.short}, ${req.body.tv_series}, ${req.body.book}, ${req.body.play}, ${req.body.short_story})`
+      );
   
-//       res.json(newCMS.rows[0]);
-//     } catch (err) {
-//       console.error(err.message);
-//     }
-//   });
+      res.json(newCMS.rows[0]);
+    } catch (err) {
+      console.error(err.message);
+    }
+  });
 
-// app.delete('/delete/:id', (req, res) => {
-//     postgres.query(`DELETE FROM cms WHERE id = ${req.params.id};`, (err, results) => {
-//         postgres.query('SELECT * FROM cms ORDER BY id ASC;', (err, results) => {
-//             res.json(results.rows)
-//         });
-//     });
-// });
+app.delete('/delete/:id', (req, res) => {
+    postgres.query(`DELETE FROM cms WHERE id = ${req.params.id};`, (err, results) => {
+        postgres.query('SELECT * FROM cms ORDER BY id ASC;', (err, results) => {
+            res.json(results.rows)
+        });
+    });
+});
 
-// app.put("/update/:id", async (req, res) => {
-//     try {
-//       const { id } = req.params;
-//       const { date } = req.body;
-//       const { movie } = req.body;
-//       const { short } = req.body;
-//       const { tv_series } = req.body;
-//       const { book } = req.body;
-//       const { play } = req.body;
-//       const { short_story } = req.body;
-//     //   const { email } = req.body;
-//       const updateCMS = await postgres.query(
-//         // 'UPDATE cms SET date = $1, movie = $2, short = $3, tv_series = $4, book = $5, play = $6, short_story = $7 WHERE id = $8',
-//         // [date, movie, short, tv_series, book, play, short_story, id]
-//         `UPDATE cms SET date = '${req.body.date}', movie = ${req.body.movie}, short = ${req.body.short}, tv_series = ${req.body.tv_series}, book = ${req.body.book}, play = ${req.body.play}, short_story = ${req.body.short_story} WHERE id = ${req.params.id}`
-//       );
+app.put("/update/:id", async (req, res) => {
+    try {
+      const { id } = req.params;
+      const { date } = req.body;
+      const { movie } = req.body;
+      const { short } = req.body;
+      const { tv_series } = req.body;
+      const { book } = req.body;
+      const { play } = req.body;
+      const { short_story } = req.body;
+    //   const { email } = req.body;
+      const updateCMS = await postgres.query(
+        // 'UPDATE cms SET date = $1, movie = $2, short = $3, tv_series = $4, book = $5, play = $6, short_story = $7 WHERE id = $8',
+        // [date, movie, short, tv_series, book, play, short_story, id]
+        `UPDATE cms SET date = '${req.body.date}', movie = ${req.body.movie}, short = ${req.body.short}, tv_series = ${req.body.tv_series}, book = ${req.body.book}, play = ${req.body.play}, short_story = ${req.body.short_story} WHERE id = ${req.params.id}`
+      );
   
-//       res.json(updateCMS);
-//     } catch (err) {
-//       console.error(err.message);
-//     }
-//   });
+      res.json(updateCMS);
+    } catch (err) {
+      console.error(err.message);
+    }
+  });
 
 //this worked
 // app.get("/", (req, res, next) => {
