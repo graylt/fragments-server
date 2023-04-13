@@ -8,10 +8,12 @@ const express = require('express');
 // const methodOverride  = require('method-override');
 const app = express ();
 const postgres = require('./postgres.js');
+const cors = require('cors');
 const fragmentsController = require('./controllers/fragment.js');
 
 require('dotenv').config()
 
+app.use(cors());
 app.use(express.json());
 app.use(express.static('public'))
 
