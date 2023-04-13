@@ -28,7 +28,7 @@ router.post('/fragments/', (req, res) => {
     })
 });
 
-router.delete(`/fragments/${id}`, (req, res) => {
+router.delete(`/fragments/:id`, (req, res) => {
     postgres.query(`DELETE FROM cms WHERE id = ${req.params.id};`, (err, results) => {
         postgres.query('SELECT * FROM cms ORDER BY id ASC;', (err, results) => {
             res.json(results.rows)
@@ -36,7 +36,7 @@ router.delete(`/fragments/${id}`, (req, res) => {
     });
 });
 
-router.put(`/fragments/${id}`, (req, res) => {
+router.put(`/fragments/:id`, (req, res) => {
     postgres.query(`UPDATE cms SET date = '${req.body.date}', movie = '${req.body.movie}', short = '${req.body.short}', tv_series = '${req.body.tv_series}', book = '${req.body.book}', play = '${req.body.play}', short_story = '${req.body.short_story}' WHERE id = ${req.params.id}`, (err, results) => {
         postgres.query('SELECT * FROM cms ORDER BY id ASC;', (err, results) => {
             res.json(results.rows)
