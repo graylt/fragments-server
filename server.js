@@ -9,7 +9,7 @@ const express = require('express');
 const app = express ();
 const postgres = require('./postgres.js');
 const cors = require('cors');
-const fragmentsController = require('./controllers/fragment.js');
+
 
 require('dotenv').config()
 
@@ -69,7 +69,7 @@ app.use(express.json());// returns middleware that only parses JSON - may or may
 // res.send('Hello World!');
 
 // });
-
+const fragmentsController = require('./controllers/fragment.js');
 app.use('/fragments', fragmentsController)
 
 // const testController = require('./controllers/test.js');
